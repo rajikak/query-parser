@@ -136,7 +136,8 @@ func (l *Lexer) readQuoted() string {
 	for l.peekChar() != '\'' {
 		l.readChar()
 	}
-	return l.input[position:l.position]
+	l.readChar()
+	return l.input[position+1 : l.position] // skip quote
 }
 
 func (l *Lexer) readIdentifier() string {

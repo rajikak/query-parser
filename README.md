@@ -1,6 +1,6 @@
 # Reference Materials
-* [Writing A Compiler In Go](https://compilerbook.com/)
 * [Let's make a Teeny Tiny compiler series](https://austinhenley.com/blog/teenytinycompiler1.html)
+* [Writing A Compiler In Go](https://compilerbook.com/)
 * [Crafting Interpreters](https://craftinginterpreters.com/)
 
 # Lexer and Parser for Parsing Query Parameters

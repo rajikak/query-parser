@@ -24,9 +24,6 @@ jobs:
             README.md
             .gitignore
             src/
-            assets/
-            build.zig
-            Makefile
           GITHUB_TOKEN: '${{ secrets.BARANASOFTWARE_TOKEN }}'
           TARGET_REPOS: |
             baranasoftware/query-parser:main
