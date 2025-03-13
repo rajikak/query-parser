@@ -7,9 +7,11 @@ import (
 func TestNextToken(t *testing.T) {
 
 	tests := []string{
-		"courses?filter=equals(",
-		//"courses?filter=equals(displayName,'Brian Connor')",
+		//"courses?filter=equals(",
+		//"students?filter=equals(displayName,",
+		//"courses?filter=equals(displayName,)",
 		//"students?filter=equals(displayName,null)",
+		"courses?filter=equals(displayName,'Brian Connor')",
 		//"teachers?filter=equals(displayName,lastName)",
 	}
 

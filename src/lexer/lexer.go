@@ -48,9 +48,12 @@ const (
 	Not            = "not"
 	Or             = "or"
 	And            = "and"
+	Filter         = "filter"
+	Null           = "null"
 )
 
 var keywords = map[string]TokenType{
+	"filter":         Filter,
 	"equals":         Equals,
 	"lessThan":       LessThan,
 	"lessOrEqual":    LessOrEqual,
@@ -64,6 +67,7 @@ var keywords = map[string]TokenType{
 	"not":            Not,
 	"or":             Or,
 	"and":            And,
+	"null":           Null,
 }
 
 func lookUpIdentifier(ident string) TokenType {
@@ -105,10 +109,18 @@ func (l *Lexer) NextToken() Token {
 	case '\'':
 		quoted := l.readQuoted()
 		tok = newTokenFromLiteral(Identifier, quoted)
+	case ',':
+		tok = newToken(Comma, l.ch)
 	default:
 		if isLetter(l.ch) { // either identifier or keyword - /users?filter=equals(displayName,'Brian O''Connor')
 			tok.Literal = l.readIdentifier()
-			tok.Type = lookUpIdentifier(tok.Literal)
+
+			if lookUpIdentifier(tok.Literal) == Identifier {
+				tok.Type = Identifier
+			} else {
+				tok.Type = "Keyword"
+			}
+
 			return tok
 		} else {
 			tok = newToken(Illegal, l.ch)
