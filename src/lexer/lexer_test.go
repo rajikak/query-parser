@@ -17,6 +17,7 @@ func TestNextToken(t *testing.T) {
 		"customers?filter=greaterThan(count(orders),count(invoices))",
 		"blogs?filter=lessThan(count(owner.articles),'10')",
 		"blogs?include=owner.articles.revisions&filter=and(or(equals(title,'Technology'),has(owner.articles)),not(equals(owner.lastName,null)))&filter[owner.articles]=equals(caption,'Two')&filter[owner.articles.revisions]=greaterThan(publishTime,'2005-05-05')",
+		"filter=any(chapter,'Intro','Summary','Conclusion')",
 	}
 
 	for _, test := range tests {

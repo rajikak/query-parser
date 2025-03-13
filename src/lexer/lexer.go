@@ -10,7 +10,7 @@ type Token struct {
 }
 
 func (t Token) Print() {
-	fmt.Printf("[type: %s, literal: %s]\n", t.Type, t.Literal)
+	fmt.Printf("Token => type: %s, literal: %s\n", t.Type, t.Literal)
 }
 
 func newToken(tokenType TokenType, ch byte) Token {
@@ -137,7 +137,6 @@ func (l *Lexer) NextToken() Token {
 			} else {
 				tok.Type = "Keyword"
 			}
-
 			return tok
 		} else {
 			tok = newToken(Illegal, l.ch)
