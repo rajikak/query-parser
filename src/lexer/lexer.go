@@ -22,18 +22,23 @@ func newTokenFromLiteral(tokenType TokenType, literal string) Token {
 }
 
 const (
-	Illegal = "Illegal"
-	Eof     = "Eof"
+	Illegal    = "Illegal"
+	EndOfInput = "eoi"
 
 	Identifier = "Identifier"
 
 	Assign     = "="
 	ParamStart = "?"
 
-	LeftParenthesis  = "("
-	RightParenthesis = ")"
-	Comma            = ","
-	Slash            = "/"
+	LeftParenthesis    = "("
+	RightParenthesis   = ")"
+	LeftSquareBracket  = "["
+	RightSquareBracket = "]"
+	Comma              = ","
+	Slash              = "/"
+	Ampersand          = "&"
+
+	Dot = "."
 
 	Equals         = "equals"
 	LessThan       = "lessThan"
@@ -41,6 +46,8 @@ const (
 	GreaterThan    = "greaterThan"
 	GreaterOrEqual = "greaterOrEqual"
 	Contains       = "contains"
+	Count          = "count"
+	Include        = "include"
 	StartWith      = "startsWith"
 	EndsWith       = "endsWith"
 	Any            = "any"
@@ -55,11 +62,13 @@ const (
 var keywords = map[string]TokenType{
 	"filter":         Filter,
 	"equals":         Equals,
+	"include":        Include,
 	"lessThan":       LessThan,
 	"lessOrEqual":    LessOrEqual,
 	"greaterThan":    GreaterThan,
 	"greaterOrEqual": GreaterOrEqual,
 	"contains":       Contains,
+	"count":          Count,
 	"startsWith":     StartWith,
 	"endsWith":       EndsWith,
 	"any":            Any,
@@ -104,13 +113,21 @@ func (l *Lexer) NextToken() Token {
 		tok = newToken(LeftParenthesis, l.ch)
 	case ')':
 		tok = newToken(RightParenthesis, l.ch)
-	case '\000': // eof
-		tok = newToken(Eof, ' ')
+	case '\000': // end of input
+		tok = newToken(EndOfInput, ' ')
 	case '\'':
 		quoted := l.readQuoted()
 		tok = newTokenFromLiteral(Identifier, quoted)
+	case '.':
+		tok = newToken(Dot, l.ch)
 	case ',':
 		tok = newToken(Comma, l.ch)
+	case '&':
+		tok = newToken(Ampersand, l.ch)
+	case '[':
+		tok = newToken(LeftSquareBracket, l.ch)
+	case ']':
+		tok = newToken(RightSquareBracket, l.ch)
 	default:
 		if isLetter(l.ch) { // either identifier or keyword - /users?filter=equals(displayName,'Brian O''Connor')
 			tok.Literal = l.readIdentifier()

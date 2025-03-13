@@ -28,7 +28,7 @@ A lexer and parser (API) for parsing REST query parameters.
 ## Notes 
 * Comparison operators compare an attribute against a constant value (between quotes), null or another attribute:
   
-  `GET /users?filter=equals(displayName,'Brian O''Connor') HTTP/1.1`
+  `GET /users?filter=equals(displayName,'Brian Connor') HTTP/1.1`
 
   `GET /users?filter=equals(displayName,null) HTTP/1.1`
 
