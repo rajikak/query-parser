@@ -2,6 +2,8 @@
 * [Let's make a Teeny Tiny compiler series](https://austinhenley.com/blog/teenytinycompiler1.html)
 * [Writing A Compiler In Go](https://compilerbook.com/)
 * [Crafting Interpreters](https://craftinginterpreters.com/)
+* [Pratt Parsers](https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/)
+* [Demystifying Pratt Parsers](https://martin.janiczek.cz/2023/07/03/demystifying-pratt-parsers.html)
 
 # Lexer and Parser for Parsing Query Parameters
 
@@ -36,8 +38,8 @@ A lexer and parser (API) for parsing REST query parameters.
 * Comparison operators can be combined with the count function, which acts on to-many relationships:
     
   `GET /customers?filter=greaterThan(count(orders),count(invoices)) HTTP/1.1`
+
   `GET /blogs?filter=lessThan(count(owner.articles),'10') HTTP/1.1`
-  ``
 * Complex filter:
   
   `GET /blogs?include=owner.articles.revisions&filter=and(or(equals(title,'Technology'),has(owner.articles)),not(equals(owner.lastName,null)))&filter[owner.articles]=equals(caption,'Two')&filter[owner.articles.revisions]=greaterThan(publishTime,'2005-05-05') HTTP/1.1`  

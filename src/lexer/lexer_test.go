@@ -4,6 +4,36 @@ import (
 	"testing"
 )
 
+func TestNextTokenOp(t *testing.T) {
+	tests := []string{
+		"?filter=equals(lastName,'Smith')",
+		"?filter=lessThan(age,'25')",
+		"?filter=lessOrEqual(lastModified,'2001-01-01')",
+		"?filter=greaterThan(duration,'6:12:14')",
+		"?filter=greaterOrEqual(percentage,'33.33')",
+		"?filter=contains(description,'cooking')",
+		"?filter=startsWith(description,'The')",
+		"?filter=endsWith(description,'End')",
+		"?filter=any(chapter,'Intro','Summary','Conclusion')",
+		"?filter=has(articles)",
+		"?filter=not(equals(lastName,null))",
+		"?filter=or(has(orders),has(invoices))",
+		"?filter=and(has(orders),has(invoices))",
+	}
+
+	for _, test := range tests {
+		l := New(test)
+		for {
+			tok := l.NextToken()
+			tok.Print()
+
+			if tok.Type == EndOfInput || tok.Type == Illegal {
+				break
+			}
+		}
+	}
+}
+
 func TestNextToken(t *testing.T) {
 
 	tests := []string{
