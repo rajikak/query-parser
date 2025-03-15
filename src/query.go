@@ -11,23 +11,20 @@ type QueryParser struct {
 
 type Function struct {
 	name string
-	args []any
+	args any
 }
 
 func (f Function) String() string {
 	msg := fmt.Sprintf("function: %s", f.name)
 
-	var args []string
-	for _, arg := range f.args {
-		switch v := arg.(type) {
-		case string:
-			args = append(args, v)
-		case Function:
-			return v.String()
-		}
+	switch v := f.args.(type) {
+	case []string:
+		return fmt.Sprintf("%s, args: [%s]", msg, strings.Join(v, ","))
+	case Function:
+		return v.String()
+	default:
+		return "unknown"
 	}
-
-	return fmt.Sprintf("%s, args: [%s]", msg, strings.Join(args, ","))
 }
 
 const (
