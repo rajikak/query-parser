@@ -12,7 +12,7 @@ func TestFunctionString(t *testing.T) {
 		{AnyFn, []string{"Intro", "Summary", "Conclusion"}},
 		{OrFn, []Function{
 			{HasFn, []string{"orders"}},
-			{HasFn, []string{"invoices"}},
+			{AndFn, []string{"invoices1", "invoices2"}},
 		}},
 	}
 

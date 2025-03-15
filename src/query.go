@@ -20,8 +20,12 @@ func (f Function) String() string {
 	switch v := f.args.(type) {
 	case []string:
 		return fmt.Sprintf("%s, args: [%s]", msg, strings.Join(v, ","))
-	case Function:
-		return v.String()
+	case []Function:
+		var msg1 string
+		for _, fun := range v {
+			msg1 += " " + fun.String()
+		}
+		return msg + msg1
 	default:
 		return "unknown"
 	}
