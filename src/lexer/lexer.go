@@ -9,6 +9,10 @@ type Token struct {
 	Literal string
 }
 
+func (t Token) String() string {
+	return fmt.Sprintf("[type: %s, literal: %s]", t.Type, t.Literal)
+}
+
 func (t Token) Print() {
 	fmt.Printf("Token => type: %s, literal: %s\n", t.Type, t.Literal)
 }
@@ -26,9 +30,10 @@ const (
 	EndOfInput = "eoi"
 
 	Identifier = "Identifier"
+	Keyword    = "Keyword"
 
-	Assign     = "="
-	ParamStart = "?"
+	AssignOp     = "="
+	ParamStartOp = "?"
 
 	LeftParenthesis    = "("
 	RightParenthesis   = ")"
@@ -106,9 +111,9 @@ func (l *Lexer) NextToken() Token {
 
 	switch l.ch {
 	case '?':
-		tok = newToken(ParamStart, l.ch)
+		tok = newToken(ParamStartOp, l.ch)
 	case '=':
-		tok = newToken(Equals, l.ch)
+		tok = newToken(AssignOp, l.ch)
 	case '(':
 		tok = newToken(LeftParenthesis, l.ch)
 	case ')':
@@ -135,7 +140,7 @@ func (l *Lexer) NextToken() Token {
 			if lookUpIdentifier(tok.Literal) == Identifier {
 				tok.Type = Identifier
 			} else {
-				tok.Type = "Keyword"
+				tok.Type = Keyword
 			}
 			return tok
 		} else {

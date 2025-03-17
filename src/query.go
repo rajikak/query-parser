@@ -73,11 +73,14 @@ type QueryResult struct {
 	includes []Include
 }
 
-func (q QueryParser) Parse() QueryResult {
-	res := QueryResult{}
-
-	return res
-}
+//func (q QueryParser) Parse(input string) QueryResult {
+//	res := QueryResult{}
+//
+//	lexer := lexer2.New(input)
+//	parser := parser2.New(lexer)
+//
+//	return res
+//}
 
 func New(query string) QueryParser {
 	return QueryParser{query}
