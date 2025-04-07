@@ -3,6 +3,7 @@ package parser
 import (
 	"fmt"
 	"query-parser/lexer"
+	"slices"
 )
 
 type Parser struct {
@@ -75,8 +76,30 @@ func (p *Parser) match(typ lexer.TokenType) error {
 	return nil
 }
 
-func (p *Parser) handleFilter() {
-	fmt.Println("handle filter")
+func (p *Parser) function(tok string) bool {
+	return slices.Contains([]string{lexer.LessThan, lexer.LessOrEqual, lexer.GreaterThan, lexer.GreaterOrEqual, lexer.Contains, lexer.Contains, lexer.StartWith, lexer.EndsWith, lexer.And, lexer.Has, lexer.Not, lexer.Or, lexer.And}, tok)
+}
+
+func (p *Parser) handleFilter() error {
+	for {
+		tok := p.nextToken()
+
+		if tok.Type == lexer.Illegal {
+			// syntax error
+			return fmt.Errorf("syntax error: illegal chracter received:%s", tok)
+		}
+
+		if tok.Type == lexer.EndOfInput {
+			break
+		}
+
+		if !p.function(tok.Literal) {
+			return fmt.Errorf("syntax error: function defintion is required, got: %s", tok)
+		}
+
+	}
+
+	return nil
 }
 
 func (p *Parser) handleInclude() {
