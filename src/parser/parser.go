@@ -90,6 +90,9 @@ func (p *Parser) handleFilter() error {
 		}
 
 		if tok.Type == lexer.EndOfInput {
+			if !p.reachedEnd() {
+				return fmt.Errorf("syntax error: not ")
+			}
 			break
 		}
 

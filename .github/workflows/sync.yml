@@ -27,4 +27,16 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.BARANASOFTWARE_TOKEN }}'
           TARGET_REPOS: |
             baranasoftware/query-parser:main
+      - uses: adrianjost/files-sync-action@v2.0.4
+        with:
+          GIT_EMAIL: nkconsultinglab@gmail.com
+          FILE_PATTERNS: |
+            ^LICENSE$
+            ^.github/workflows/sync-.*
+            README.md
+            .gitignore
+            src/
+          GITHUB_TOKEN: '${{ secrets.NKCONSULTING_TOKEN }}'
+          TARGET_REPOS: |
+            nkconsultinglab/query-parser:main
       - run: echo "🍏 This job's status is ${{ job.status }}."
