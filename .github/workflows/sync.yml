@@ -1,4 +1,4 @@
-name: sync rajikak => baransoftware
+name: sync rajikak => consulting
 run-name: ${{ github.actor }} is updating repos using GitHub Actions 🚀
 on: [push]
 jobs:

@@ -152,6 +152,10 @@ func (l *Lexer) NextToken() Token {
 	return tok
 }
 
+func (l *Lexer) ReachedEnd() bool {
+	return len(l.input) == l.position+1
+}
+
 func (l *Lexer) readQuoted() string {
 	position := l.position
 	for l.peekChar() != '\'' {
