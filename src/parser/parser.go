@@ -115,19 +115,27 @@ type stack struct {
 	storage []lexer.Token
 }
 
-func (s stack) push(e lexer.Token) {
+func createStack() stack {
+	return stack{storage: make([]lexer.Token, 0)}
+}
+
+func (s *stack) push(e lexer.Token) {
 	s.storage = append(s.storage, e)
 }
 
-func (s stack) pop() lexer.Token {
+func (s *stack) pop() lexer.Token {
 	n := len(s.storage) - 1
 	e := s.storage[n]
 	s.storage = s.storage[:n]
 	return e
 }
 
+func (s *stack) empty() bool {
+	return len(s.storage) == 0
+}
+
 func (p *Parser) handleFilter() (Filter, error) {
-	var st stack
+	st := createStack()
 
 	filter := Filter{}
 
@@ -142,13 +150,6 @@ func (p *Parser) handleFilter() (Filter, error) {
 				return filter, fmt.Errorf("syntax error: encountered end of input while buffer is not fully consumed")
 			}
 			break
-		} else if tok.Type == lexer.LeftParenthesis {
-			st.push(tok)
-		} else if tok.Type == lexer.RightParenthesis {
-			e := st.pop()
-			if e.Type != lexer.LeftParenthesis {
-				return filter, fmt.Errorf("syntax error: expected (")
-			}
 		} else {
 			if filter.defined() && !p.function(tok.Literal) {
 				return filter, fmt.Errorf("syntax error: function defintion is required, got: %s", tok)
@@ -163,8 +164,25 @@ func (p *Parser) handleFilter() (Filter, error) {
 				}
 			} else {
 				var args []string
-				for tok2 := p.nextToken(); tok2.Type == lexer.RightParenthesis; {
-					if tok2.Type != lexer.Comma {
+
+				for {
+					tok2 := p.nextToken()
+
+					if tok2.Type == lexer.LeftParenthesis {
+						st.push(tok2)
+					} else if tok2.Type == lexer.RightParenthesis {
+
+						e := st.pop()
+						if e.Type != lexer.LeftParenthesis {
+							return filter, fmt.Errorf("syntax error: expected (")
+						}
+
+						if st.empty() {
+							break // processed fully
+						}
+					} else if tok2.Type == lexer.Comma {
+						continue
+					} else {
 						args = append(args, tok2.Literal)
 					}
 				}

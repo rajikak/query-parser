@@ -153,7 +153,7 @@ func (l *Lexer) NextToken() Token {
 }
 
 func (l *Lexer) ReachedEnd() bool {
-	return len(l.input) == l.position+1
+	return l.position+1 == l.readPosition
 }
 
 func (l *Lexer) readQuoted() string {
