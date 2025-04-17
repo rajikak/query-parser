@@ -40,7 +40,6 @@ func (p *Parser) Parse() (QueryResult, error) {
 				if err != nil {
 					return result, err
 				}
-				//p.nextToken()
 
 				filter, err := p.handleFilter()
 				if err != nil {
@@ -54,7 +53,6 @@ func (p *Parser) Parse() (QueryResult, error) {
 				if err != nil {
 					return result, err
 				}
-				//p.nextToken()
 				err = p.handleInclude()
 				if err != nil {
 					return result, err
@@ -152,7 +150,7 @@ func (p *Parser) handleFilter() (Filter, error) {
 				return filter, fmt.Errorf("syntax error: expected (")
 			}
 		} else {
-			if !filter.defined() && !p.function(tok.Literal) {
+			if filter.defined() && !p.function(tok.Literal) {
 				return filter, fmt.Errorf("syntax error: function defintion is required, got: %s", tok)
 			}
 			fun := Function{name: tok.Literal}
@@ -164,7 +162,13 @@ func (p *Parser) handleFilter() (Filter, error) {
 					return filter2, err
 				}
 			} else {
-				fmt.Println("val: ", tok.Literal)
+				var args []string
+				for tok2 := p.nextToken(); tok2.Type == lexer.RightParenthesis; {
+					if tok2.Type != lexer.Comma {
+						args = append(args, tok2.Literal)
+					}
+				}
+				fun.args = args
 				filter.functions = append(filter.functions, fun)
 			}
 		}
@@ -205,7 +209,9 @@ type Filter struct {
 
 func (f Filter) defined() bool {
 	for _, filter := range f.functions {
-		return filter.name != ""
+		if filter.name != "" {
+			return true
+		}
 	}
 	return false
 }
